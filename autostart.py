@@ -1,49 +1,48 @@
 import subprocess
 import threading
 import time
+import sys
 import os
-from datetime import datetime
 
-# === CURRENT DIRECTORY ===
-ROOT_DIR = os.getcwd()
-TV_SERVER = os.path.join(ROOT_DIR, "tv_server.py")
-TRADE_PARSER = os.path.join(ROOT_DIR, "trade_parser.py")
-# TRADE_EXECUTOR = os.path.join(ROOT_DIR, "trade_executor.py")  # ⏳ Will be added later
+# --- Paths ---
+CORE_DIR = os.path.join(os.getcwd(), "core")
+TV_SERVER = os.path.join(CORE_DIR, "tv_server.py")
+TRADE_PARSER = os.path.join(CORE_DIR, "trade_parser.py")
+TRADE_EXECUTOR = os.path.join(CORE_DIR, "trade_executor.py")
 
-SIGNALS_DIR = os.path.join(ROOT_DIR, "data", "signals")
+def run_tv_server():
+    print("🚀 Starting tv_server.py...")
+    subprocess.Popen([sys.executable, TV_SERVER])
 
+def run_loop(script_path, name, interval=5):
+    def loop():
+        while True:
+            try:
+                print(f"🔁 Running {name}...")
+                subprocess.run([sys.executable, script_path])
+            except Exception as e:
+                print(f"❌ Error running {name}: {e}")
+            time.sleep(interval)
+    thread = threading.Thread(target=loop, daemon=True)
+    thread.start()
 
-def timestamp():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-# === START TV SERVER ===
-def start_tv_server():
-    print(f"[{timestamp()}] 🛰️ Starting TradingView webhook server...")
+def run_once(script_path, name):
     try:
-        subprocess.Popen(["python", TV_SERVER], cwd=ROOT_DIR)
+        print(f"✅ Running {name} once...")
+        subprocess.run([sys.executable, script_path])
     except Exception as e:
-        print(f"❌ Failed to start {TV_SERVER}: {str(e)}")
+        print(f"❌ Error running {name}: {e}")
 
-
-# === LOOP TRADE PARSER ===
-def loop_trade_parser():
-    print(f"[{timestamp()}] 🔄 Starting trade parser loop...")
-    while True:
-        os.system(f"python {TRADE_PARSER}")
-        time.sleep(5)
-
-
-# === MAIN ===
 if __name__ == "__main__":
-    print(f"\n=== 🚀 TradingBridge AutoStart Initialized ({timestamp()}) ===\n")
-    os.makedirs(SIGNALS_DIR, exist_ok=True)
+    print("🌐 TradeBridge AutoStart Initiated")
 
-    # Start TradingView webhook server in background
-    threading.Thread(target=start_tv_server, daemon=True).start()
+    run_tv_server()                     # Start Flask server
+    run_once(TRADE_EXECUTOR, "trade_executor.py")  # Launch MT5 terminals once
+    run_loop(TRADE_PARSER, "trade_parser.py", interval=5)  # Repeat every 5 sec
 
-    # Start Trade Parser loop (blocking)
-    loop_trade_parser()
-
-    # Future: add executor here
-    # threading.Thread(target=loop_trade_executor, daemon=True).start()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\n🛑 Shutting down TradeBridge.")
+        sys.exit(0)

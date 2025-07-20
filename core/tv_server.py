@@ -5,60 +5,74 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# Output directories
-SIGNAL_DIR = "data"
-MT5_DIR = os.path.join(SIGNAL_DIR, "mt5_signals")
-CTRADER_DIR = os.path.join(SIGNAL_DIR, "ctrader_signals")
+# === CONFIG ===
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+VALID_TARGETS = ["mt5", "ctrader"]
+PORT = 80
 
-# Ensure output dirs exist
-os.makedirs(MT5_DIR, exist_ok=True)
-os.makedirs(CTRADER_DIR, exist_ok=True)
 
-def write_signal(platform, data):
-    now = datetime.now().isoformat()
-    platform_dir = MT5_DIR if platform == "mt5" else CTRADER_DIR
-    filename = os.path.join(platform_dir, f"{platform}_signals_{datetime.now().date()}.csv")
-    
-    # Check if file exists
-    file_exists = os.path.isfile(filename)
+def ensure_dir(path):
+    os.makedirs(path, exist_ok=True)
 
-    # Fields for CSV
-    fields = ["timestamp", "symbol", "action", "timeframe", "strategy", "executed"]
-    row = [now, data['symbol'], data['action'], data['timeframe'], data['strategy'], "no"]
 
-    # Write to CSV
-    with open(filename, "a", newline="") as f:
-        writer = csv.writer(f)
+def get_today_filepath(target):
+    today = datetime.now().strftime("%Y%m%d")
+    folder = os.path.join(DATA_DIR, f"{target}_signals")
+    ensure_dir(folder)
+    filename = f"{target}_signals_{today}.csv"
+    return os.path.join(folder, filename)
+
+
+def write_signal(target, row):
+    filepath = get_today_filepath(target)
+    file_exists = os.path.isfile(filepath)
+
+    with open(filepath, mode="a", newline="") as file:
+        writer = csv.writer(file)
         if not file_exists:
-            writer.writerow(fields)
+            writer.writerow(["timestamp", "symbol", "action", "timeframe", "strategy", "executed"])
         writer.writerow(row)
+
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    try:
-        alert = request.json
-        if not alert:
-            return jsonify({"error": "Empty alert"}), 400
+    if not request.is_json:
+        return jsonify({"error": "Expected JSON data"}), 400
 
-        # Required fields
-        symbol = alert["symbol"]
-        action = alert["action"]
-        timeframe = alert["timeframe"]
-        strategy = alert["strategy"]
-        target = alert.get("target", "mt5").lower()
+    data = request.get_json()
 
-        # Handle multi-targets
-        platforms = [p.strip() for p in target.split(",")]
-        for p in platforms:
-            if p in ("mt5", "ctrader"):
-                write_signal(p, alert)
+    # Required keys
+    required = {"symbol", "action", "timeframe", "target", "strategy"}
+    if not required.issubset(data):
+        return jsonify({"error": f"Missing required keys: {required - set(data)}"}), 400
 
-        print(f"✅ Signal received for {symbol} -> {target.upper()}")
-        return jsonify({"status": "success"}), 200
+    symbol = data["symbol"].strip().upper()
+    action = data["action"].strip().lower()
+    timeframe = data["timeframe"].strip()
+    strategy = data["strategy"].strip()
+    targets = [t.strip().lower() for t in data["target"].split(",") if t.strip().lower() in VALID_TARGETS]
 
-    except Exception as e:
-        print(f"⚠️ Error processing webhook: {e}")
-        return jsonify({"error": str(e)}), 500
+    if not targets:
+        return jsonify({"error": "No valid targets (mt5 or ctrader) specified"}), 400
+
+    timestamp = datetime.now().isoformat()
+    row = [timestamp, symbol, action, timeframe, strategy, "no"]
+
+    for target in targets:
+        try:
+            write_signal(target, row)
+            print(f"✅ Written to {target}: {row}")
+        except Exception as e:
+            print(f"❌ Error writing to {target}: {e}")
+            return jsonify({"error": str(e)}), 500
+
+    return jsonify({"status": "success", "targets": targets}), 200
+
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    try:
+        print(f"🚀 Starting Webhook Server on port {PORT}...")
+        app.run(host="0.0.0.0", port=PORT)
+    except PermissionError:
+        print("❌ Run as Administrator or use a port above 1024.")

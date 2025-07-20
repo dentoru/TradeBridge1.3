@@ -1,85 +1,152 @@
-import csv
-import json
-from datetime import datetime, timedelta
 import os
+import json
+import time
+import pandas as pd
+from datetime import datetime, timedelta
+import MetaTrader5 as mt5
 
-SIGNALS_DIR = 'data/mt5_signals'
-CONFIG_PATH = 'config/config.json'
-OUTPUT_LOG = 'logs/parsed_signals.csv'
+# --- Define Paths ---
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Up from /core
+CONFIG_PATH = os.path.join(ROOT_DIR, "config", "config.json")
+SIGNALS_PATH = os.path.join(ROOT_DIR, "data", "mt5_signals", f"mt5_signals_{datetime.now().strftime('%Y%m%d')}.csv")
+PROCESSED_PATH = os.path.join(ROOT_DIR, "data", "parsed_signals.csv")
 
-def load_config():
-    with open(CONFIG_PATH, 'r') as f:
-        return json.load(f)
-
-def parse_signal_row(row):
-    try:
-        timestamp = datetime.fromisoformat(row['timestamp'])
-        symbol = row['symbol']
-        action = row['action'].lower()
-        timeframe = row['timeframe']
-        strategy = row['strategy']
-        executed = row['executed'].strip().lower()
-        return {
-            "timestamp": timestamp,
-            "symbol": symbol,
-            "action": action,
-            "timeframe": timeframe,
-            "strategy": strategy,
-            "executed": executed
-        }
-    except Exception as e:
-        print(f"⚠️ Error parsing row: {row} → {e}")
-        return None
-
-def get_all_signal_files():
-    files = []
-    for file in os.listdir(SIGNALS_DIR):
-        if file.endswith('.csv') and file.startswith('mt5_signals_'):
-            files.append(os.path.join(SIGNALS_DIR, file))
-    return sorted(files)
-
-def filter_recent_unexecuted_signals(signals, minutes=2):
-    now = datetime.utcnow()
-    return [
-        s for s in signals
-        if s and s['executed'] == 'no' and (now - s['timestamp']) < timedelta(minutes=minutes)
-    ]
+# --- Load Config ---
+with open(CONFIG_PATH, "r") as f:
+    CONFIG = json.load(f)
 
 def load_signals():
-    signal_files = get_all_signal_files()
-    all_signals = []
+    try:
+        df = pd.read_csv(SIGNALS_PATH)
+    except FileNotFoundError:
+        print(f"⚠️ Signals file not found: {SIGNALS_PATH}")
+        return pd.DataFrame()
 
-    for file in signal_files:
-        with open(file, 'r') as f:
-            reader = csv.DictReader(f, fieldnames=['timestamp', 'symbol', 'action', 'timeframe', 'strategy', 'executed'])
-            for row in reader:
-                signal = parse_signal_row(row)
-                if signal:
-                    all_signals.append(signal)
-    return all_signals
+    required_columns = ["timestamp", "symbol", "action", "timeframe", "strategy", "executed"]
+    for col in required_columns:
+        if col not in df.columns:
+            print(f"❌ Missing column in signals file: '{col}'")
+            return pd.DataFrame()
 
-def log_filtered_signals(signals):
-    os.makedirs(os.path.dirname(OUTPUT_LOG), exist_ok=True)
-    with open(OUTPUT_LOG, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=signals[0].keys())
-        writer.writeheader()
-        for signal in signals:
-            writer.writerow(signal)
+    df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce", utc=True)
+    df = df[df["timestamp"].notna()]
 
-def main():
-    config = load_config()
-    strategy_list = config.get('mt5_paths', {}).keys()
+    df = df[df["executed"] == "no"]
+    df = df[df["timestamp"] >= pd.Timestamp.utcnow() - pd.Timedelta(minutes=1)]
+    return df
 
-    print("🔍 Loading all strategy signals...")
-    signals = load_signals()
-    
-    print("📌 Filtering valid unexecuted signals...")
-    filtered = filter_recent_unexecuted_signals(signals)
+def get_mt5_login(strategy):
+    strat_path = os.path.join(ROOT_DIR, "strategies", strategy, "mt5_login.json")
+    if not os.path.exists(strat_path):
+        print(f"❌ No login file found for strategy '{strategy}'")
+        return None
+    with open(strat_path, "r") as f:
+        return json.load(f)
 
-    print(f"✅ Found {len(filtered)} unexecuted signals in last 2 minutes.")
-    if filtered:
-        log_filtered_signals(filtered)
-        print(f"📝 Saved to {OUTPUT_LOG}")
+def connect_mt5(login_info):
+    mt5.initialize(login_info["path"])
+    return mt5.login(
+        login=int(login_info["login"]),
+        password=login_info["password"],
+        server=login_info["server"]
+    )
 
-if __name__ == '__main__':
-    main()
+def get_symbol_info(symbol):
+    mt5.symbol_select(symbol, True)
+    info = mt5.symbol_info(symbol)
+    if not info:
+        print(f"❌ Symbol info unavailable: {symbol}")
+    return info
+
+def calculate_lot_size(symbol, risk_setting, balance, sl_pips=100):
+    if isinstance(risk_setting, (int, float)):
+        return round(risk_setting, 2)
+
+    risk_type = risk_setting.get("type")
+    value = risk_setting.get("value", 0)
+    if risk_type != "percent":
+        return None
+
+    risk_amount = balance * (value / 100)
+    info = get_symbol_info(symbol)
+    if not info:
+        return None
+
+    if "USD" in symbol.upper():
+        pip_value = 10
+    elif "XAU" in symbol:
+        pip_value = 1
+    elif "BTC" in symbol:
+        pip_value = 0.1
+    else:
+        pip_value = 10
+
+    lot = risk_amount / (pip_value * sl_pips)
+    return round(max(lot, 0.01), 2)
+
+def parse_signals():
+    df = load_signals()
+    if df.empty:
+        print("⚠️ No recent valid unexecuted signals.")
+        return
+
+    parsed_rows = []
+
+    for i, row in df.iterrows():
+        try:
+            strategy = row["strategy"]
+            symbol = row["symbol"]
+            direction = row["action"]
+            timeframe = row["timeframe"]
+            timestamp = row["timestamp"]
+        except KeyError as e:
+            print(f"❌ Skipping row {i} due to missing field: {e}")
+            continue
+
+        if strategy not in CONFIG["enabled_strategies"]:
+            df.at[i, "executed"] = "yes (strg:off)"
+            continue
+
+        login_info = get_mt5_login(strategy)
+        if not login_info or not connect_mt5(login_info):
+            print(f"❌ Failed to init MT5 for {strategy}")
+            continue
+
+        acc_info = mt5.account_info()
+        if not acc_info:
+            print(f"❌ Cannot fetch account info for {strategy}")
+            continue
+
+        balance = acc_info.balance
+        lot_setting = CONFIG["lot_sizes"].get(strategy)
+        if lot_setting is None:
+            print(f"❌ No lot size config for {strategy}")
+            continue
+
+        lot_size = calculate_lot_size(symbol, lot_setting, balance)
+        if lot_size is None:
+            print(f"❌ Lot size calc failed for {symbol} ({strategy})")
+            continue
+
+        parsed_rows.append({
+            "timestamp": timestamp.isoformat(),
+            "symbol": symbol,
+            "direction": direction,
+            "timeframe": timeframe,
+            "strategy": strategy,
+            "lot": lot_size
+        })
+
+        df.at[i, "executed"] = "yes"
+
+    if parsed_rows:
+        out_df = pd.DataFrame(parsed_rows)
+        out_df.to_csv(PROCESSED_PATH, index=False)
+        print(f"✅ Parsed {len(parsed_rows)} → {PROCESSED_PATH}")
+    else:
+        print("⚠️ No rows parsed.")
+
+    df.to_csv(SIGNALS_PATH, index=False)
+
+if __name__ == "__main__":
+    parse_signals()

@@ -1,26 +1,121 @@
-{
-  "mt5_paths": {
-    "algo11": "C:/Program Files/MetaTrader 10usd/terminal64.exe",
-    "algo15": "C:/Program Files/MetaTrader 15usd/terminal64.exe"
-  },
-  "strategies": {
-    "algo11": {
-      "allowed_actions": ["buy"],
-      "allowed_symbols": ["XAUUSD", "BTCUSD"],
-      "lot_size": {
-        "type": "fixed",
-        "value": 0.01
-      },
-      "tpsl_logic": "fixed_tp_sl"
-    },
-    "algo15": {
-      "allowed_actions": ["buy", "sell"],
-      "allowed_symbols": ["XAUUSD", "BTCUSD", "ETHUSD"],
-      "lot_size": {
-        "type": "fixed",
-        "value": 0.1
-      },
-      "tpsl_logic": "breakeven"
+import os
+import json
+import pandas as pd
+from datetime import datetime, timedelta
+import MetaTrader5 as mt5
+
+CONFIG_PATH = "config/config.json"
+SIGNALS_DIR = "data/mt5_signals"
+EXECUTION_FILE = "data/exec/trade_exec.csv"
+MAX_SIGNAL_AGE_SECONDS = 60
+
+# --- Helpers ---
+def load_config():
+    with open(CONFIG_PATH, "r") as f:
+        return json.load(f)
+
+def get_strategy_config(config, strategy):
+    return config.get("strategies", {}).get(strategy, {})
+
+def get_mt5_login(strategy):
+    login_path = f"strategies/{strategy}/mt5_login.json"
+    if os.path.exists(login_path):
+        with open(login_path) as f:
+            return json.load(f)
+    return None
+
+def connect_mt5(strategy):
+    creds = get_mt5_login(strategy)
+    if not creds:
+        print(f"⚠️ No login info for strategy: {strategy}")
+        return False
+    if not mt5.initialize(path=creds["path"], login=creds["login"], password=creds["password"], server=creds["server"]):
+        print(f"❌ Failed to connect to MT5 for {strategy}: {mt5.last_error()}")
+        return False
+    return True
+
+def get_balance():
+    acc_info = mt5.account_info()
+    return acc_info.balance if acc_info else 0
+
+def calc_lot(symbol, strategy_config):
+    lot_cfg = strategy_config.get("lot_size", {})
+    if lot_cfg.get("type") == "fixed":
+        return lot_cfg.get("value", 0.01)
+    elif lot_cfg.get("type") == "percentage":
+        balance = get_balance()
+        risk_pct = lot_cfg.get("value", 1)
+        lot = (risk_pct / 100) * balance / 1000  # crude risk model
+        return round(lot, 2)
+    return 0.01
+
+def enrich_signal(row, lot_size, tpsl_logic):
+    return {
+        "timestamp": row["timestamp"],
+        "symbol": row["symbol"],
+        "action": row["action"],
+        "timeframe": row["timeframe"],
+        "strategy": row["strategy"],
+        "lot_size": lot_size,
+        "tpsl_logic": tpsl_logic,
     }
-  }
-}
+
+def parse_signals():
+    config = load_config()
+    latest_file = None
+
+    try:
+        files = sorted(os.listdir(SIGNALS_DIR), reverse=True)
+        latest_file = next(f for f in files if f.endswith(".csv"))
+    except StopIteration:
+        print("⚠️ No signal file found.")
+        return
+
+    df = pd.read_csv(os.path.join(SIGNALS_DIR, latest_file))
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+    now = datetime.now()
+    fresh_df = df[df["timestamp"] >= now - timedelta(seconds=MAX_SIGNAL_AGE_SECONDS)]
+    fresh_df = fresh_df[df["executed"].str.lower() == "no"]
+
+    enriched = []
+
+    for i, row in fresh_df.iterrows():
+        strategy = row["strategy"]
+        strat_cfg = get_strategy_config(config, strategy)
+
+        if not strat_cfg.get("enabled", False):
+            df.at[i, "executed"] = "yes (strg:off)"
+            continue
+
+        if row["action"] not in strat_cfg.get("allowed_actions", []):
+            df.at[i, "executed"] = "yes (invalid_action)"
+            continue
+
+        if row["symbol"] not in strat_cfg.get("allowed_symbols", []):
+            df.at[i, "executed"] = "yes (invalid_symbol)"
+            continue
+
+        if not connect_mt5(strategy):
+            df.at[i, "executed"] = "yes (mt5_fail)"
+            continue
+
+        lot = calc_lot(row["symbol"], strat_cfg)
+        enriched_row = enrich_signal(row, lot, strat_cfg.get("tpsl_logic", "none"))
+        enriched.append(enriched_row)
+        df.at[i, "executed"] = "yes"
+
+        mt5.shutdown()
+
+    if enriched:
+        out_df = pd.DataFrame(enriched)
+        os.makedirs(os.path.dirname(EXECUTION_FILE), exist_ok=True)
+        out_df.to_csv(EXECUTION_FILE, index=False)
+        print(f"✅ Enriched trades written to: {EXECUTION_FILE}")
+    else:
+        print("ℹ️ No valid signals to enrich.")
+
+    df.to_csv(os.path.join(SIGNALS_DIR, latest_file), index=False)
+
+# --- Run ---
+if __name__ == "__main__":
+    parse_signals()
