@@ -3,46 +3,48 @@ import threading
 import time
 import sys
 import os
+from core.utils import initialize_persistent_connection, shutdown_all  # Direct imports
 
 # --- Paths ---
 CORE_DIR = os.path.join(os.getcwd(), "core")
 TV_SERVER = os.path.join(CORE_DIR, "tv_server.py")
 TRADE_PARSER = os.path.join(CORE_DIR, "trade_parser.py")
-TRADE_EXECUTOR = os.path.join(CORE_DIR, "trade_executor.py")
 
 def run_tv_server():
     print("🚀 Starting tv_server.py...")
     subprocess.Popen([sys.executable, TV_SERVER])
 
-def run_loop(script_path, name, interval=5):
-    def loop():
-        while True:
-            try:
-                print(f"🔁 Running {name}...")
-                subprocess.run([sys.executable, script_path])
-            except Exception as e:
-                print(f"❌ Error running {name}: {e}")
-            time.sleep(interval)
-    thread = threading.Thread(target=loop, daemon=True)
-    thread.start()
+def run_parser_loop():
+    """Run trade parser in main thread with interval"""
+    while True:
+        try:
+            print("\n" + "="*40)
+            print("=== PROCESSING SIGNALS ===")
+            subprocess.run([sys.executable, TRADE_PARSER])
+        except Exception as e:
+            print(f"❌ Parser error: {e}")
+        time.sleep(5)  # 5-second interval
 
-def run_once(script_path, name):
-    try:
-        print(f"✅ Running {name} once...")
-        subprocess.run([sys.executable, script_path])
-    except Exception as e:
-        print(f"❌ Error running {name}: {e}")
+def initialize_mt5():
+    """Initialize MT5 connections in main process"""
+    from core.utils import load_config
+    config = load_config()
+    for strategy in config["strategies"]:
+        if config["strategies"][strategy]["enabled"]:
+            initialize_persistent_connection(strategy)
 
 if __name__ == "__main__":
     print("🌐 TradeBridge AutoStart Initiated")
-
-    run_tv_server()                     # Start Flask server
-    run_once(TRADE_EXECUTOR, "trade_executor.py")  # Launch MT5 terminals once
-    run_loop(TRADE_PARSER, "trade_parser.py", interval=5)  # Repeat every 5 sec
-
+    
+    # Initialize MT5 FIRST in main process
+    initialize_mt5()
+    
+    # Start other services
+    run_tv_server()
+    
     try:
-        while True:
-            time.sleep(1)
+        run_parser_loop()  # This will run indefinitely
     except KeyboardInterrupt:
-        print("\n🛑 Shutting down TradeBridge.")
+        print("\n🛑 Shutting down...")
+        shutdown_all()
         sys.exit(0)

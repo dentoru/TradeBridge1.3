@@ -1,2 +1,2 @@
-timestamp,symbol,action,tf,strategy,lot
-2025-07-19T15:31:42.027976,BTCUSD,buy,1hr,algo11,0.01
+timestamp,symbol,direction,timeframe,strategy,lot
+2025-07-20T20:09:43.343826+00:00,BTCUSD,buy,1hr,algo15,0.02

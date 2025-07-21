@@ -1,0 +1,11 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-07-21 16:12:32.827279,BTCUSD,buy,1hr,algo15,yes
+2025-07-21 16:13:14.203327,BTCUSD,buy,1hr,algo15,yes
+2025-07-21 16:18:23.721873,BTCUSD,buy,1hr,algo15,yes
+2025-07-21 16:26:21.016010,BTCUSD,buy,1hr,algo15,yes
+2025-07-21 16:46:05.842091,BTCUSD,buy,1hr,algo15,yes
+2025-07-21T16:56:02.932514,BTCUSD,buy,1hr,algo15,yes
+2025-07-21T17:04:16.517413,BTCUSD,buy,1hr,algo15,yes
+2025-07-21T17:10:40.964612,BTCUSD,buy,1hr,algo11,yes
+2025-07-21T17:26:42.137584,BTCUSD,buy,1hr,algo11,yes
+2025-07-21T17:27:09.280966,BTCUSD,buy,1hr,algo15,yes
