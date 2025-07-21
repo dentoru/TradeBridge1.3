@@ -1,4 +1,4 @@
-timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_logic,trade_done,tpsl_done,processed_at
-2025-07-21T17:10:40.964612+00:00,BTCUSD,buy,1hr,algo11,no,0.01,fixed_tp_sl,no,no,2025-07-21T14:10:44.600206+00:00
-2025-07-21T17:26:42.137584+00:00,BTCUSD,buy,1hr,algo11,no,0.01,fixed_tp_sl,no,no,2025-07-21T14:26:45.543745+00:00
-2025-07-21T17:27:09.280966+00:00,BTCUSD,buy,1hr,algo15,no,0.08,breakeven,no,no,2025-07-21T14:27:11.336955+00:00
+timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_logic,trade_done,tpsl_done,processed_at,executed_at
+2025-07-21T23:50:42.852287+00:00,BTCUSD,buy,1hr,algo15,no,0.08,"{'mode': 'percentage_balance', 'sl_percent': 3.5, 'tp_percent': 2.5, 'breakeven_at': 0.5}",yes,yes,2025-07-21T20:50:51.419288+00:00,2025-07-21T20:50:56.318587+00:00
+2025-07-21T23:50:49.726844+00:00,BTCUSD,buy,1hr,algo15,no,0.08,"{'mode': 'percentage_balance', 'sl_percent': 3.5, 'tp_percent': 2.5, 'breakeven_at': 0.5}",yes,no,2025-07-21T20:50:51.437341+00:00,2025-07-21T20:50:56.601858+00:00
+2025-07-21T23:51:12.011005+00:00,BTCUSD,buy,1hr,algo11,no,0.01,"{'mode': 'fixed_pips', 'sl_pips': 55, 'tp_pips': 105, 'trailing': {'activate_at': 50, 'lock_pips': 10}}",yes,no,2025-07-21T20:51:16.178902+00:00,2025-07-21T20:51:23.210387+00:00

@@ -1,0 +1,4 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-07-22T00:01:10.573675,BTCUSD,buy,1hr,algo11,no
+2025-07-22T00:27:35.676647,BTCUSD,buy,1hr,algo15,no
+2025-07-22T00:27:41.099005,BTCUSD,buy,1hr,algo15,no
