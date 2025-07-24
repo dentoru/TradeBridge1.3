@@ -28,3 +28,4 @@ timestamp,symbol,action,timeframe,strategy,executed
 2025-07-22T14:25:48.503385,GBPJPY,buy,1hr,algo11,yes
 2025-07-22T14:30:17.855636,GBPJPY,buy,1hr,algo11,yes
 2025-07-22T14:35:40.271385,XAUUSD,buy,1hr,algo11,yes
+2025-07-22T16:00:00.144960,XAUUSD,buy,1hr,algo11,yes

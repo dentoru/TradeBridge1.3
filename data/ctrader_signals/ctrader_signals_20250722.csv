@@ -18,3 +18,4 @@ timestamp,symbol,action,timeframe,strategy,executed
 2025-07-22T10:08:04.452259,BTCUSD,buy,1hr,algo15,no
 2025-07-22T10:09:25.325258,BTCUSD,buy,1hr,algo15,no
 2025-07-22T10:11:21.829057,BTCUSD,buy,1hr,algo15,no
+2025-07-22T16:00:00.144960,XAUUSD,buy,1hr,algo11,no

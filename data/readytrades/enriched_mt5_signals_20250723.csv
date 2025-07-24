@@ -1,0 +1,2 @@
+timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_mode,trade_done,tpsl_done,ticket,execution_price,executed_at,processed_at
+2025-07-23T22:00:10.387340+00:00,BTCUSD,buy,1hr,algo11,yes,0.01,fixed_pips,yes,no,1573128121.0,118481.79000000001,2025-07-23T19:01:19.405457+00:00,2025-07-23T19:00:42.152748+00:00

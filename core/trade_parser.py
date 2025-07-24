@@ -128,7 +128,7 @@ def process_signals():
             strategy = str(signal["strategy"])
             status = "no"
             lot_size = ""
-            tpsl_logic = ""
+            tpsl_mode = ""  # Changed from tpsl_logic to just store mode
             
             if not is_recent(signal["timestamp"]):
                 status = "yes (1min+)"
@@ -145,7 +145,8 @@ def process_signals():
                             strategy_cfg,
                             strategy
                         )
-                        tpsl_logic = strategy_cfg.get("tpsl_logic", "")
+                        # Only store the mode from tpsl_logic
+                        tpsl_mode = strategy_cfg.get("tpsl_logic", {}).get("mode", "")
             
             enriched_data.append({
                 "timestamp": signal["timestamp"].isoformat(),
@@ -154,10 +155,13 @@ def process_signals():
                 "timeframe": str(signal["timeframe"]),
                 "strategy": strategy,
                 "executed": status,
-                "lot_size": f"{float(lot_size):.2f}" if lot_size else "",  # Format to 2 decimal places
-                "tpsl_logic": tpsl_logic,
+                "lot_size": f"{float(lot_size):.2f}" if lot_size else "",
+                "tpsl_mode": tpsl_mode,  # Changed from tpsl_logic
                 "trade_done": "no",
                 "tpsl_done": "no",
+                "ticket": "",
+                "execution_price": "",
+                "executed_at": "",
                 "processed_at": dt.datetime.now(utc).isoformat()
             })
         
@@ -175,25 +179,15 @@ def save_and_mark_processed(df):
     try:
         ensure_dir(ENRICHED_DIR)
         today = dt.datetime.now().strftime("%Y%m%d")
-        
-        # Save enriched signals - append to existing file if it exists
         enriched_file = os.path.join(ENRICHED_DIR, f"enriched_mt5_signals_{today}.csv")
         
-        # Get current timestamp for the file (only once per run)
-        file_timestamp = dt.datetime.now(utc).isoformat()
-        
-        if os.path.exists(enriched_file):
-            # Read existing data and append new signals
-            existing_df = pd.read_csv(enriched_file)
-            combined_df = pd.concat([existing_df, df], ignore_index=True)
-            combined_df.to_csv(enriched_file, index=False)
-        else:
-            df.to_csv(enriched_file, index=False)
-            
-        # Add timestamp file
+        # Remove old timestamp file if exists
         timestamp_file = os.path.join(ENRICHED_DIR, f"enriched_mt5_signals_{today}_timestamp.txt")
-        with open(timestamp_file, 'w') as f:
-            f.write(file_timestamp)
+        if os.path.exists(timestamp_file):
+            os.remove(timestamp_file)
+        
+        # Save only the enriched CSV (removed timestamp file generation)
+        df.to_csv(enriched_file, index=False)
             
         # Mark originals as processed
         signal_file = os.path.join(SIGNAL_DIR, f"mt5_signals_{today}.csv")
@@ -211,7 +205,7 @@ def save_and_mark_processed(df):
 
 if __name__ == "__main__":
     print("\n" + "="*50)
-    print("=== TRADE BRIDGE PARSER v1.5 - LEVERAGE EDITION ===")
+    print("=== TRADE BRIDGE PARSER v1.6 - SIMPLIFIED TP/SL ===")
     print("="*50 + "\n")
     
     # Initialize MT5 (only needed for symbol info)
