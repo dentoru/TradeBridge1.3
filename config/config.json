@@ -1,9 +1,25 @@
 {
   "mt5_paths": {
+    "algo10": "C:/Program Files/MetaTrader algo10py/terminal64.exe",
     "algo11": "C:/Program Files/MetaTrader 10usd/terminal64.exe",
     "algo15": "C:/Program Files/MetaTrader Algo15py/terminal64.exe"
   },
   "strategies": {
+    "algo10": {
+      "enabled": true,
+      "allowed_actions": ["buy", "sell"],
+      "allowed_symbols": ["BTCUSD", "ETHUSD", "SOLUSD", "BNBUSD"],
+      "lot_size": {
+        "type": "percentage",
+        "value": 2
+      },
+      "tpsl_logic": {
+        "mode": "percentage_balance",
+        "sl_percent": 3.5,
+        "tp_percent": 2.5,
+        "breakeven_at": 0.5
+      }
+    },
     "algo11": {
       "enabled": true,
       "allowed_actions": ["buy", "sell"],
