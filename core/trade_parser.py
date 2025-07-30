@@ -62,13 +62,12 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
     try:
         # Fixed lot strategy
         if strategy_cfg["lot_size"]["type"] == "fixed":
-            return round(float(strategy_cfg["lot_size"]["value"]), 2)  # Round to 2 decimal places
+            return round(float(strategy_cfg["lot_size"]["value"]), 2)
             
         # Percentage-based strategy
-        balance = get_balance(strategy_name)  # From persistent connection
+        balance = get_balance(strategy_name)
         print(f"💰 [{strategy_name}] Account Balance: ${balance:.2f} (Leverage 1:{LEVERAGE})")
         
-        # Get symbol info
         symbol = str(symbol).upper()
         if not mt5.symbol_select(symbol, True):
             raise ValueError(f"Symbol {symbol} not available")
@@ -93,9 +92,9 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
         # Core calculation
         lot_size = risk_amount / (price * contract_size)
         
-        # Apply constraints and round to 2 decimal places
+        # Apply constraints
         min_lot = 0.00001 if symbol.startswith(('BTC', 'ETH')) else 0.01
-        final_lot = max(min(round(lot_size, 2), 100), min_lot)  # Round to 2 decimal places
+        final_lot = max(min(round(lot_size, 2), 100), min_lot)
         
         print(f"""
         📊 [{strategy_name}] LOT SIZE:
@@ -123,12 +122,13 @@ def process_signals():
             return None
             
         enriched_data = []
+        processed_count = 0
         
         for _, signal in signals.iterrows():
             strategy = str(signal["strategy"])
             status = "no"
             lot_size = ""
-            tpsl_mode = ""  # Changed from tpsl_logic to just store mode
+            tpsl_mode = ""
             
             if not is_recent(signal["timestamp"]):
                 status = "yes (1min+)"
@@ -145,8 +145,8 @@ def process_signals():
                             strategy_cfg,
                             strategy
                         )
-                        # Only store the mode from tpsl_logic
                         tpsl_mode = strategy_cfg.get("tpsl_logic", {}).get("mode", "")
+                        processed_count += 1
             
             enriched_data.append({
                 "timestamp": signal["timestamp"].isoformat(),
@@ -156,7 +156,7 @@ def process_signals():
                 "strategy": strategy,
                 "executed": status,
                 "lot_size": f"{float(lot_size):.2f}" if lot_size else "",
-                "tpsl_mode": tpsl_mode,  # Changed from tpsl_logic
+                "tpsl_mode": tpsl_mode,
                 "trade_done": "no",
                 "tpsl_done": "no",
                 "ticket": "",
@@ -165,6 +165,7 @@ def process_signals():
                 "processed_at": dt.datetime.now(utc).isoformat()
             })
         
+        print(f"ℹ️ Processed {processed_count} new signals")
         return pd.DataFrame(enriched_data)
         
     except Exception as e:
@@ -174,6 +175,7 @@ def process_signals():
 def save_and_mark_processed(df):
     """Save results and mark signals as processed"""
     if df is None or df.empty:
+        print("ℹ️ No data to save")
         return False
         
     try:
@@ -181,13 +183,23 @@ def save_and_mark_processed(df):
         today = dt.datetime.now().strftime("%Y%m%d")
         enriched_file = os.path.join(ENRICHED_DIR, f"enriched_mt5_signals_{today}.csv")
         
-        # Remove old timestamp file if exists
-        timestamp_file = os.path.join(ENRICHED_DIR, f"enriched_mt5_signals_{today}_timestamp.txt")
-        if os.path.exists(timestamp_file):
-            os.remove(timestamp_file)
+        # Load existing data if file exists
+        existing_data = pd.DataFrame()
+        if os.path.exists(enriched_file):
+            existing_data = pd.read_csv(enriched_file)
         
-        # Save only the enriched CSV (removed timestamp file generation)
-        df.to_csv(enriched_file, index=False)
+        # Combine with new data
+        combined_data = pd.concat([existing_data, df], ignore_index=True)
+        
+        # Remove duplicates (same timestamp + symbol + strategy)
+        combined_data = combined_data.drop_duplicates(
+            subset=["timestamp", "symbol", "strategy"],
+            keep="last"
+        )
+        
+        # Save combined data
+        combined_data.to_csv(enriched_file, index=False)
+        print(f"✅ Saved {len(df)} new signals (Total in file: {len(combined_data)})")
             
         # Mark originals as processed
         signal_file = os.path.join(SIGNAL_DIR, f"mt5_signals_{today}.csv")
@@ -196,7 +208,6 @@ def save_and_mark_processed(df):
             original.loc[original["executed"] == "no", "executed"] = "yes"
             original.to_csv(signal_file, index=False)
             
-        print(f"✅ Saved {len(df)} signals to {enriched_file}")
         return True
         
     except Exception as e:
@@ -205,7 +216,7 @@ def save_and_mark_processed(df):
 
 if __name__ == "__main__":
     print("\n" + "="*50)
-    print("=== TRADE BRIDGE PARSER v1.6 - SIMPLIFIED TP/SL ===")
+    print("=== TRADE BRIDGE PARSER v1.6 - FIXED CSV OUTPUT ===")
     print("="*50 + "\n")
     
     # Initialize MT5 (only needed for symbol info)
@@ -216,12 +227,13 @@ if __name__ == "__main__":
     try:
         enriched_df = process_signals()
         
-        if enriched_df is not None and not enriched_df.empty:
-            save_and_mark_processed(enriched_df)
-        else:
-            print("ℹ️ No signals were processed")
+        if enriched_df is not None:
+            if not enriched_df.empty:
+                save_and_mark_processed(enriched_df)
+            else:
+                print("ℹ️ No signals were processed")
     finally:
-        mt5.shutdown()  # Only closes the symbol info connection
+        mt5.shutdown()
     
     print("\n" + "="*50)
     print("=== PROCESSING COMPLETE ===")

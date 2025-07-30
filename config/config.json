@@ -8,7 +8,7 @@
     "algo10": {
       "enabled": true,
       "allowed_actions": ["buy", "sell"],
-      "allowed_symbols": ["BTCUSD", "ETHUSD", "SOLUSD", "BNBUSD"],
+      "allowed_symbols": ["BTCUSD", "ETHUSD"],
       "lot_size": {
         "type": "percentage",
         "value": 2
@@ -38,7 +38,7 @@
     "algo15": {
       "enabled": true,
       "allowed_actions": ["buy", "sell"],
-      "allowed_symbols": ["XAUUSD", "BTCUSD", "ETHUSD", "EURUSD", "GBPUSD", "GBPJPY"],
+      "allowed_symbols": ["XAUUSD", "AUDUSD" ,"USDJPY", "EURUSD", "GBPUSD", "GBPJPY"],
       "lot_size": {
         "type": "percentage",
         "value": 2

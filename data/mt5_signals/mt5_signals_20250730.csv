@@ -1,0 +1,3 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-07-30T22:00:05.918009,XAUUSD,sell,1hr,algo11,yes
+2025-07-30T22:00:18.320212,ETHUSD,sell,1hr,algo10,yes

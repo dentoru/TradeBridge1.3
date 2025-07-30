@@ -1,0 +1,9 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-07-27T00:00:05.866198,SOLUSD,sell,1hr,algo10,yes
+2025-07-27T00:09:28.968738,BNBUSD,sell,1hr,algo10,yes
+2025-07-27T01:30:11.756026,SOLUSD,buy,1hr,algo10,yes
+2025-07-27T05:00:36.770514,SOLUSD,buy,1hr,algo10,yes
+2025-07-27T06:00:08.409552,SOLUSD,sell,1hr,algo10,yes
+2025-07-27T17:00:06.208611,SOLUSD,sell,1hr,algo10,yes
+2025-07-27T19:00:10.925181,SOLUSD,buy,1hr,algo10,yes
+2025-07-27T20:00:06.847702,SOLUSD,sell,1hr,algo10,yes
