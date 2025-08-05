@@ -1,0 +1,4 @@
+timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_mode,trade_done,tpsl_done,ticket,execution_price,executed_at,processed_at
+2025-08-01T01:59:57.737290+00:00,XAUUSD,buy,1hr,algo11,yes,0.01,percentage_balance,yes,no,1590990812.0,3295.106,2025-07-31T23:00:09.343149+00:00,2025-07-31T23:00:03.182685+00:00
+2025-08-01T03:00:00.649202+00:00,XAUUSD,sell,1hr,algo11,yes,0.01,percentage_balance,yes,no,1591055500.0,3287.786,2025-08-01T00:00:08.042707+00:00,2025-08-01T00:00:03.595460+00:00
+2025-08-01T05:59:58.230567+00:00,XAUUSD,buy,1hr,algo11,yes,0.01,percentage_balance,yes,no,1591199415.0,3292.3450000000003,2025-08-01T03:00:11.006667+00:00,2025-08-01T03:00:04.846348+00:00

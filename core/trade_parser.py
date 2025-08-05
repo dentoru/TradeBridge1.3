@@ -2,18 +2,34 @@ import pandas as pd
 import datetime as dt
 import os
 import json
+import logging
 from pytz import utc
-from utils import get_balance, load_config  # Uses persistent connections
+from utils import get_balance, load_config
+import MetaTrader5 as mt5
 
 # ===== CONFIGURATION =====
 BASE_DIR = r"C:\TradeBridge1.3"
+CORE_DIR = os.path.join(BASE_DIR, "core")
+LOG_DIR = os.path.join(BASE_DIR, "logs")
 SIGNAL_DIR = os.path.join(BASE_DIR, "data", "mt5_signals")
 ENRICHED_DIR = os.path.join(BASE_DIR, "data", "readytrades")
 LEVERAGE = 500  # 1:500 leverage
 
+# Setup logging
+os.makedirs(LOG_DIR, exist_ok=True)
+logging.basicConfig(
+    filename=os.path.join(LOG_DIR, f"trade_parser_{dt.datetime.now().strftime('%Y%m%d')}.log"),
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger()
+
 def ensure_dir(path):
     """Ensure output directory exists"""
-    os.makedirs(path, exist_ok=True)
+    try:
+        os.makedirs(path, exist_ok=True)
+    except Exception as e:
+        logger.error(f"Directory creation failed: {str(e)}")
 
 def load_signals():
     """Load today's signals with validation"""
@@ -21,7 +37,7 @@ def load_signals():
     signal_file = os.path.join(SIGNAL_DIR, f"mt5_signals_{today}.csv")
     
     if not os.path.exists(signal_file):
-        print(f"ℹ️ No signals file found: {signal_file}")
+        logger.info(f"No signals file found: {signal_file}")
         return pd.DataFrame()
 
     try:
@@ -36,7 +52,7 @@ def load_signals():
         )
         return df[df["timestamp"].notna() & (df["executed"] == "no")]
     except Exception as e:
-        print(f"❌ Signal loading error: {str(e)}")
+        logger.error(f"Signal loading error: {str(e)}")
         return pd.DataFrame()
 
 def is_recent(signal_time):
@@ -66,7 +82,7 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
             
         # Percentage-based strategy
         balance = get_balance(strategy_name)
-        print(f"💰 [{strategy_name}] Account Balance: ${balance:.2f} (Leverage 1:{LEVERAGE})")
+        logger.info(f"[{strategy_name}] Account Balance: ${balance:.2f} (Leverage 1:{LEVERAGE})")
         
         symbol = str(symbol).upper()
         if not mt5.symbol_select(symbol, True):
@@ -96,8 +112,8 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
         min_lot = 0.00001 if symbol.startswith(('BTC', 'ETH')) else 0.01
         final_lot = max(min(round(lot_size, 2), 100), min_lot)
         
-        print(f"""
-        📊 [{strategy_name}] LOT SIZE:
+        logger.info(f"""
+        [{strategy_name}] LOT SIZE:
         Symbol: {symbol}
         Price: {price:.5f}
         Contract Size: {contract_size}
@@ -108,7 +124,7 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
         return final_lot
         
     except Exception as e:
-        print(f"⚠️ [{strategy_name}] Lot calc error: {str(e)}")
+        logger.error(f"[{strategy_name}] Lot calc error: {str(e)}")
         return 0.01  # Fallback
 
 def process_signals():
@@ -118,7 +134,7 @@ def process_signals():
         signals = load_signals()
         
         if signals.empty:
-            print("✅ No valid signals to process")
+            logger.info("No valid signals to process")
             return None
             
         enriched_data = []
@@ -165,17 +181,17 @@ def process_signals():
                 "processed_at": dt.datetime.now(utc).isoformat()
             })
         
-        print(f"ℹ️ Processed {processed_count} new signals")
+        logger.info(f"Processed {processed_count} new signals")
         return pd.DataFrame(enriched_data)
         
     except Exception as e:
-        print(f"❌ Fatal processing error: {str(e)}")
+        logger.error(f"Fatal processing error: {str(e)}", exc_info=True)
         return None
 
 def save_and_mark_processed(df):
     """Save results and mark signals as processed"""
     if df is None or df.empty:
-        print("ℹ️ No data to save")
+        logger.info("No data to save")
         return False
         
     try:
@@ -183,25 +199,19 @@ def save_and_mark_processed(df):
         today = dt.datetime.now().strftime("%Y%m%d")
         enriched_file = os.path.join(ENRICHED_DIR, f"enriched_mt5_signals_{today}.csv")
         
-        # Load existing data if file exists
         existing_data = pd.DataFrame()
         if os.path.exists(enriched_file):
             existing_data = pd.read_csv(enriched_file)
         
-        # Combine with new data
         combined_data = pd.concat([existing_data, df], ignore_index=True)
-        
-        # Remove duplicates (same timestamp + symbol + strategy)
         combined_data = combined_data.drop_duplicates(
             subset=["timestamp", "symbol", "strategy"],
             keep="last"
         )
         
-        # Save combined data
         combined_data.to_csv(enriched_file, index=False)
-        print(f"✅ Saved {len(df)} new signals (Total in file: {len(combined_data)})")
+        logger.info(f"Saved {len(df)} new signals (Total in file: {len(combined_data)})")
             
-        # Mark originals as processed
         signal_file = os.path.join(SIGNAL_DIR, f"mt5_signals_{today}.csv")
         if os.path.exists(signal_file):
             original = pd.read_csv(signal_file)
@@ -211,30 +221,23 @@ def save_and_mark_processed(df):
         return True
         
     except Exception as e:
-        print(f"❌ Failed to save output: {str(e)}")
+        logger.error(f"Failed to save output: {str(e)}", exc_info=True)
         return False
 
 if __name__ == "__main__":
     print("\n" + "="*50)
-    print("=== TRADE BRIDGE PARSER v1.6 - FIXED CSV OUTPUT ===")
+    print("=== TRADE BRIDGE PARSER v1.7 - SILENT MODE ===")
     print("="*50 + "\n")
     
-    # Initialize MT5 (only needed for symbol info)
-    import MetaTrader5 as mt5
     if not mt5.initialize():
-        print("❌ MT5 initialization failed for symbol data")
+        logger.error("MT5 initialization failed for symbol data")
     
     try:
         enriched_df = process_signals()
-        
         if enriched_df is not None:
-            if not enriched_df.empty:
-                save_and_mark_processed(enriched_df)
-            else:
-                print("ℹ️ No signals were processed")
+            save_and_mark_processed(enriched_df)
+    except Exception as e:
+        logger.error(f"Main execution error: {str(e)}", exc_info=True)
     finally:
         mt5.shutdown()
-    
-    print("\n" + "="*50)
-    print("=== PROCESSING COMPLETE ===")
-    print("="*50 + "\n")
+        logger.info("Processing complete")

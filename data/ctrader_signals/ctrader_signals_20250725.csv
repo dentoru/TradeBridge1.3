@@ -1,0 +1,6 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-07-25T07:46:45.782035,XAUUSD,buy,1hr,algo11,yes
+2025-07-25T07:50:40.572521,XAUUSD,buy,1hr,algo11,yes
+2025-07-25T07:52:42.304748,XAUUSD,buy,1hr,algo15,yes
+2025-07-25T20:59:59.531343,XAUUSD,buy,15MIN,algo11,yes
+2025-07-25T21:00:00.847110,XAUUSD,buy,1hr,algo11,yes

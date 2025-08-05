@@ -1,0 +1,2 @@
+timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_mode,trade_done,tpsl_done,ticket,execution_price,executed_at,processed_at
+2025-07-25T22:00:03.382621+00:00,EURUSD,buy,1hr,algo15,yes,0.1,percentage_balance,yes,no,1578381574.0,1.17452,2025-07-25T19:00:21.560840+00:00,2025-07-25T19:00:15.634692+00:00

@@ -1,3 +1,5 @@
 timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_mode,trade_done,tpsl_done,ticket,execution_price,executed_at,processed_at
 2025-07-30T22:00:05.918009+00:00,XAUUSD,sell,1hr,algo11,yes,0.01,percentage_balance,yes,no,1587856049.0,3280.623,2025-07-30T19:00:56.270938+00:00,2025-07-30T19:00:44.237005+00:00
 2025-07-30T22:00:18.320212+00:00,ETHUSD,sell,1hr,algo10,yes,2.39,percentage_balance,yes,no,1587856079.0,3730.31,2025-07-30T19:00:56.951837+00:00,2025-07-30T19:00:44.461449+00:00
+2025-07-30T23:00:17.225806+00:00,ETHUSD,buy,1hr,algo10,no,2.43,percentage_balance,no,no,,,,2025-07-30T20:00:19.082686+00:00
+2025-07-30T23:17:50.555110+00:00,EURUSD,buy,1hr,algo11,no,0.02,percentage_balance,no,no,,,,2025-07-30T20:17:56.682252+00:00

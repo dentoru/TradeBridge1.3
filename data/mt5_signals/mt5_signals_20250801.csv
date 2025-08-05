@@ -1,0 +1,4 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-08-01T01:59:57.737290,XAUUSD,buy,1hr,algo11,yes
+2025-08-01T03:00:00.649202,XAUUSD,sell,1hr,algo11,yes
+2025-08-01T05:59:58.230567,XAUUSD,buy,1hr,algo11,yes

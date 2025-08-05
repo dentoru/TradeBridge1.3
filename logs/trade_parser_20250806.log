@@ -1,0 +1,289 @@
+2025-08-06 01:43:02,901 - INFO - No valid signals to process
+2025-08-06 01:43:02,901 - INFO - Processing complete
+2025-08-06 01:43:10,265 - INFO - No valid signals to process
+2025-08-06 01:43:10,266 - INFO - Processing complete
+2025-08-06 01:43:19,194 - INFO - [algo10] Account Balance: $1064.85 (Leverage 1:500)
+2025-08-06 01:43:19,195 - INFO - 
+        [algo10] LOT SIZE:
+        Symbol: BTCUSD
+        Price: 113930.51000
+        Contract Size: 1.0
+        Risk Amount: $10648.50
+        Final Lot: 0.09
+        
+2025-08-06 01:43:19,195 - INFO - Processed 1 new signals
+2025-08-06 01:43:19,222 - INFO - Saved 1 new signals (Total in file: 21)
+2025-08-06 01:43:19,231 - INFO - Processing complete
+2025-08-06 01:43:27,006 - INFO - No valid signals to process
+2025-08-06 01:43:27,006 - INFO - Processing complete
+2025-08-06 01:43:35,188 - INFO - No valid signals to process
+2025-08-06 01:43:35,189 - INFO - Processing complete
+2025-08-06 01:43:43,130 - INFO - No valid signals to process
+2025-08-06 01:43:43,130 - INFO - Processing complete
+2025-08-06 01:44:00,620 - INFO - No valid signals to process
+2025-08-06 01:44:00,621 - INFO - Processing complete
+2025-08-06 01:44:07,881 - INFO - No valid signals to process
+2025-08-06 01:44:07,881 - INFO - Processing complete
+2025-08-06 01:44:15,898 - INFO - No valid signals to process
+2025-08-06 01:44:15,899 - INFO - Processing complete
+2025-08-06 01:44:23,842 - INFO - No valid signals to process
+2025-08-06 01:44:23,842 - INFO - Processing complete
+2025-08-06 01:44:31,992 - INFO - No valid signals to process
+2025-08-06 01:44:31,993 - INFO - Processing complete
+2025-08-06 01:44:39,907 - INFO - No valid signals to process
+2025-08-06 01:44:39,907 - INFO - Processing complete
+2025-08-06 01:44:47,507 - INFO - No valid signals to process
+2025-08-06 01:44:47,508 - INFO - Processing complete
+2025-08-06 01:44:56,131 - INFO - No valid signals to process
+2025-08-06 01:44:56,132 - INFO - Processing complete
+2025-08-06 01:45:04,547 - INFO - No valid signals to process
+2025-08-06 01:45:04,547 - INFO - Processing complete
+2025-08-06 01:45:12,305 - INFO - No valid signals to process
+2025-08-06 01:45:12,305 - INFO - Processing complete
+2025-08-06 01:45:20,044 - INFO - No valid signals to process
+2025-08-06 01:45:20,044 - INFO - Processing complete
+2025-08-06 01:45:28,062 - INFO - No valid signals to process
+2025-08-06 01:45:28,062 - INFO - Processing complete
+2025-08-06 01:45:35,761 - INFO - No valid signals to process
+2025-08-06 01:45:35,761 - INFO - Processing complete
+2025-08-06 01:45:43,133 - INFO - No valid signals to process
+2025-08-06 01:45:43,133 - INFO - Processing complete
+2025-08-06 01:45:51,196 - INFO - No valid signals to process
+2025-08-06 01:45:51,196 - INFO - Processing complete
+2025-08-06 01:45:58,974 - INFO - No valid signals to process
+2025-08-06 01:45:58,974 - INFO - Processing complete
+2025-08-06 01:46:06,362 - INFO - No valid signals to process
+2025-08-06 01:46:06,363 - INFO - Processing complete
+2025-08-06 01:46:14,339 - INFO - No valid signals to process
+2025-08-06 01:46:14,340 - INFO - Processing complete
+2025-08-06 01:46:22,021 - INFO - No valid signals to process
+2025-08-06 01:46:22,022 - INFO - Processing complete
+2025-08-06 01:46:29,656 - INFO - No valid signals to process
+2025-08-06 01:46:29,656 - INFO - Processing complete
+2025-08-06 01:46:37,568 - INFO - No valid signals to process
+2025-08-06 01:46:37,568 - INFO - Processing complete
+2025-08-06 01:46:44,680 - INFO - No valid signals to process
+2025-08-06 01:46:44,680 - INFO - Processing complete
+2025-08-06 01:46:52,765 - INFO - No valid signals to process
+2025-08-06 01:46:52,766 - INFO - Processing complete
+2025-08-06 01:47:00,734 - INFO - No valid signals to process
+2025-08-06 01:47:00,734 - INFO - Processing complete
+2025-08-06 01:47:08,353 - INFO - No valid signals to process
+2025-08-06 01:47:08,353 - INFO - Processing complete
+2025-08-06 01:47:18,796 - INFO - No valid signals to process
+2025-08-06 01:47:18,796 - INFO - Processing complete
+2025-08-06 01:47:28,018 - INFO - No valid signals to process
+2025-08-06 01:47:28,018 - INFO - Processing complete
+2025-08-06 01:47:36,392 - INFO - No valid signals to process
+2025-08-06 01:47:36,392 - INFO - Processing complete
+2025-08-06 01:47:44,359 - INFO - No valid signals to process
+2025-08-06 01:47:44,359 - INFO - Processing complete
+2025-08-06 01:48:08,119 - INFO - No valid signals to process
+2025-08-06 01:48:08,121 - INFO - Processing complete
+2025-08-06 01:48:15,879 - INFO - No valid signals to process
+2025-08-06 01:48:15,879 - INFO - Processing complete
+2025-08-06 01:48:24,202 - INFO - No valid signals to process
+2025-08-06 01:48:24,203 - INFO - Processing complete
+2025-08-06 01:48:33,843 - INFO - No valid signals to process
+2025-08-06 01:48:33,843 - INFO - Processing complete
+2025-08-06 01:52:57,925 - INFO - No valid signals to process
+2025-08-06 01:52:57,925 - INFO - Processing complete
+2025-08-06 01:53:05,585 - INFO - No valid signals to process
+2025-08-06 01:53:05,587 - INFO - Processing complete
+2025-08-06 01:53:13,676 - INFO - No valid signals to process
+2025-08-06 01:53:13,677 - INFO - Processing complete
+2025-08-06 01:53:21,579 - INFO - No valid signals to process
+2025-08-06 01:53:21,579 - INFO - Processing complete
+2025-08-06 01:53:28,974 - INFO - No valid signals to process
+2025-08-06 01:53:28,974 - INFO - Processing complete
+2025-08-06 01:53:37,441 - INFO - [algo10] Account Balance: $1064.85 (Leverage 1:500)
+2025-08-06 01:53:37,442 - INFO - 
+        [algo10] LOT SIZE:
+        Symbol: BTCUSD
+        Price: 113970.33000
+        Contract Size: 1.0
+        Risk Amount: $10648.50
+        Final Lot: 0.09
+        
+2025-08-06 01:53:37,442 - INFO - Processed 1 new signals
+2025-08-06 01:53:37,454 - INFO - Saved 1 new signals (Total in file: 22)
+2025-08-06 01:53:37,461 - INFO - Processing complete
+2025-08-06 01:53:45,633 - INFO - No valid signals to process
+2025-08-06 01:53:45,634 - INFO - Processing complete
+2025-08-06 01:53:53,138 - INFO - No valid signals to process
+2025-08-06 01:53:53,138 - INFO - Processing complete
+2025-08-06 01:54:00,598 - INFO - No valid signals to process
+2025-08-06 01:54:00,598 - INFO - Processing complete
+2025-08-06 01:54:07,886 - INFO - No valid signals to process
+2025-08-06 01:54:07,886 - INFO - Processing complete
+2025-08-06 01:54:15,245 - INFO - No valid signals to process
+2025-08-06 01:54:15,246 - INFO - Processing complete
+2025-08-06 01:54:23,115 - INFO - No valid signals to process
+2025-08-06 01:54:23,116 - INFO - Processing complete
+2025-08-06 01:54:31,077 - INFO - No valid signals to process
+2025-08-06 01:54:31,077 - INFO - Processing complete
+2025-08-06 01:54:39,543 - INFO - No valid signals to process
+2025-08-06 01:54:39,543 - INFO - Processing complete
+2025-08-06 01:54:48,574 - INFO - No valid signals to process
+2025-08-06 01:54:48,574 - INFO - Processing complete
+2025-08-06 01:54:56,161 - INFO - No valid signals to process
+2025-08-06 01:54:56,163 - INFO - Processing complete
+2025-08-06 01:55:04,455 - INFO - No valid signals to process
+2025-08-06 01:55:04,455 - INFO - Processing complete
+2025-08-06 01:55:12,231 - INFO - No valid signals to process
+2025-08-06 01:55:12,232 - INFO - Processing complete
+2025-08-06 01:55:19,863 - INFO - No valid signals to process
+2025-08-06 01:55:19,864 - INFO - Processing complete
+2025-08-06 01:55:27,592 - INFO - No valid signals to process
+2025-08-06 01:55:27,593 - INFO - Processing complete
+2025-08-06 01:55:34,983 - INFO - No valid signals to process
+2025-08-06 01:55:34,984 - INFO - Processing complete
+2025-08-06 01:55:42,661 - INFO - No valid signals to process
+2025-08-06 01:55:42,661 - INFO - Processing complete
+2025-08-06 01:55:51,440 - INFO - No valid signals to process
+2025-08-06 01:55:51,441 - INFO - Processing complete
+2025-08-06 01:55:58,885 - INFO - No valid signals to process
+2025-08-06 01:55:58,885 - INFO - Processing complete
+2025-08-06 01:56:06,789 - INFO - No valid signals to process
+2025-08-06 01:56:06,790 - INFO - Processing complete
+2025-08-06 01:56:14,625 - INFO - No valid signals to process
+2025-08-06 01:56:14,625 - INFO - Processing complete
+2025-08-06 01:56:22,101 - INFO - No valid signals to process
+2025-08-06 01:56:22,101 - INFO - Processing complete
+2025-08-06 01:56:29,862 - INFO - No valid signals to process
+2025-08-06 01:56:29,862 - INFO - Processing complete
+2025-08-06 01:56:37,693 - INFO - No valid signals to process
+2025-08-06 01:56:37,694 - INFO - Processing complete
+2025-08-06 01:56:45,234 - INFO - No valid signals to process
+2025-08-06 01:56:45,234 - INFO - Processing complete
+2025-08-06 01:56:53,847 - INFO - No valid signals to process
+2025-08-06 01:56:53,847 - INFO - Processing complete
+2025-08-06 01:57:01,372 - INFO - No valid signals to process
+2025-08-06 01:57:01,372 - INFO - Processing complete
+2025-08-06 01:57:08,919 - INFO - No valid signals to process
+2025-08-06 01:57:08,920 - INFO - Processing complete
+2025-08-06 01:57:17,002 - INFO - No valid signals to process
+2025-08-06 01:57:17,002 - INFO - Processing complete
+2025-08-06 01:57:24,704 - INFO - No valid signals to process
+2025-08-06 01:57:24,705 - INFO - Processing complete
+2025-08-06 01:57:32,352 - INFO - No valid signals to process
+2025-08-06 01:57:32,352 - INFO - Processing complete
+2025-08-06 01:57:40,664 - INFO - No valid signals to process
+2025-08-06 01:57:40,664 - INFO - Processing complete
+2025-08-06 01:57:48,010 - INFO - No valid signals to process
+2025-08-06 01:57:48,010 - INFO - Processing complete
+2025-08-06 01:57:56,439 - INFO - No valid signals to process
+2025-08-06 01:57:56,439 - INFO - Processing complete
+2025-08-06 01:58:15,435 - INFO - No valid signals to process
+2025-08-06 01:58:15,436 - INFO - Processing complete
+2025-08-06 01:58:23,346 - INFO - No valid signals to process
+2025-08-06 01:58:23,347 - INFO - Processing complete
+2025-08-06 01:58:31,311 - INFO - No valid signals to process
+2025-08-06 01:58:31,312 - INFO - Processing complete
+2025-08-06 01:58:40,132 - INFO - No valid signals to process
+2025-08-06 01:58:40,133 - INFO - Processing complete
+2025-08-06 01:58:47,727 - INFO - No valid signals to process
+2025-08-06 01:58:47,727 - INFO - Processing complete
+2025-08-06 01:58:56,493 - INFO - [algo10] Account Balance: $1064.85 (Leverage 1:500)
+2025-08-06 01:58:56,495 - INFO - 
+        [algo10] LOT SIZE:
+        Symbol: BTCUSD
+        Price: 113971.15000
+        Contract Size: 1.0
+        Risk Amount: $10648.50
+        Final Lot: 0.09
+        
+2025-08-06 01:58:56,496 - INFO - Processed 1 new signals
+2025-08-06 01:58:56,521 - INFO - Saved 1 new signals (Total in file: 23)
+2025-08-06 01:58:56,531 - INFO - Processing complete
+2025-08-06 01:59:04,426 - INFO - No valid signals to process
+2025-08-06 01:59:04,428 - INFO - Processing complete
+2025-08-06 01:59:11,941 - INFO - No valid signals to process
+2025-08-06 01:59:11,941 - INFO - Processing complete
+2025-08-06 01:59:19,955 - INFO - No valid signals to process
+2025-08-06 01:59:19,955 - INFO - Processing complete
+2025-08-06 01:59:27,799 - INFO - No valid signals to process
+2025-08-06 01:59:27,799 - INFO - Processing complete
+2025-08-06 01:59:35,642 - INFO - No valid signals to process
+2025-08-06 01:59:35,642 - INFO - Processing complete
+2025-08-06 01:59:43,230 - INFO - No valid signals to process
+2025-08-06 01:59:43,230 - INFO - Processing complete
+2025-08-06 01:59:51,683 - INFO - No valid signals to process
+2025-08-06 01:59:51,684 - INFO - Processing complete
+2025-08-06 01:59:59,188 - INFO - No valid signals to process
+2025-08-06 01:59:59,188 - INFO - Processing complete
+2025-08-06 02:00:06,633 - INFO - Processed 0 new signals
+2025-08-06 02:00:06,654 - INFO - Saved 1 new signals (Total in file: 24)
+2025-08-06 02:00:06,666 - INFO - Processing complete
+2025-08-06 02:00:14,624 - INFO - No valid signals to process
+2025-08-06 02:00:14,625 - INFO - Processing complete
+2025-08-06 02:00:21,954 - INFO - No valid signals to process
+2025-08-06 02:00:21,954 - INFO - Processing complete
+2025-08-06 02:00:29,215 - INFO - No valid signals to process
+2025-08-06 02:00:29,215 - INFO - Processing complete
+2025-08-06 02:00:37,361 - INFO - No valid signals to process
+2025-08-06 02:00:37,361 - INFO - Processing complete
+2025-08-06 02:00:44,867 - INFO - No valid signals to process
+2025-08-06 02:00:44,868 - INFO - Processing complete
+2025-08-06 02:00:53,048 - INFO - No valid signals to process
+2025-08-06 02:00:53,049 - INFO - Processing complete
+2025-08-06 02:01:01,066 - INFO - No valid signals to process
+2025-08-06 02:01:01,066 - INFO - Processing complete
+2025-08-06 02:01:08,402 - INFO - No valid signals to process
+2025-08-06 02:01:08,403 - INFO - Processing complete
+2025-08-06 02:01:15,911 - INFO - No valid signals to process
+2025-08-06 02:01:15,911 - INFO - Processing complete
+2025-08-06 02:01:24,036 - INFO - No valid signals to process
+2025-08-06 02:01:24,036 - INFO - Processing complete
+2025-08-06 02:01:31,219 - INFO - No valid signals to process
+2025-08-06 02:01:31,220 - INFO - Processing complete
+2025-08-06 02:01:39,417 - INFO - No valid signals to process
+2025-08-06 02:01:39,418 - INFO - Processing complete
+2025-08-06 02:01:47,323 - INFO - No valid signals to process
+2025-08-06 02:01:47,323 - INFO - Processing complete
+2025-08-06 02:01:55,088 - INFO - No valid signals to process
+2025-08-06 02:01:55,088 - INFO - Processing complete
+2025-08-06 02:02:02,714 - INFO - No valid signals to process
+2025-08-06 02:02:02,715 - INFO - Processing complete
+2025-08-06 02:02:10,842 - INFO - No valid signals to process
+2025-08-06 02:02:10,842 - INFO - Processing complete
+2025-08-06 02:02:18,151 - INFO - No valid signals to process
+2025-08-06 02:02:18,152 - INFO - Processing complete
+2025-08-06 02:02:26,908 - INFO - No valid signals to process
+2025-08-06 02:02:26,908 - INFO - Processing complete
+2025-08-06 02:02:36,008 - INFO - No valid signals to process
+2025-08-06 02:02:36,008 - INFO - Processing complete
+2025-08-06 02:02:44,724 - INFO - No valid signals to process
+2025-08-06 02:02:44,725 - INFO - Processing complete
+2025-08-06 02:02:53,868 - INFO - No valid signals to process
+2025-08-06 02:02:53,871 - INFO - Processing complete
+2025-08-06 02:03:04,955 - INFO - No valid signals to process
+2025-08-06 02:03:04,956 - INFO - Processing complete
+2025-08-06 02:03:12,212 - INFO - No valid signals to process
+2025-08-06 02:03:12,212 - INFO - Processing complete
+2025-08-06 02:03:21,852 - INFO - No valid signals to process
+2025-08-06 02:03:21,853 - INFO - Processing complete
+2025-08-06 02:03:29,392 - INFO - No valid signals to process
+2025-08-06 02:03:29,393 - INFO - Processing complete
+2025-08-06 02:03:37,200 - INFO - No valid signals to process
+2025-08-06 02:03:37,200 - INFO - Processing complete
+2025-08-06 02:03:45,721 - INFO - No valid signals to process
+2025-08-06 02:03:45,721 - INFO - Processing complete
+2025-08-06 02:03:53,672 - INFO - No valid signals to process
+2025-08-06 02:03:53,673 - INFO - Processing complete
+2025-08-06 02:04:02,093 - INFO - No valid signals to process
+2025-08-06 02:04:02,094 - INFO - Processing complete
+2025-08-06 02:04:16,982 - INFO - No valid signals to process
+2025-08-06 02:04:16,983 - INFO - Processing complete
+2025-08-06 02:04:25,762 - INFO - No valid signals to process
+2025-08-06 02:04:25,763 - INFO - Processing complete
+2025-08-06 02:04:34,822 - INFO - No valid signals to process
+2025-08-06 02:04:34,822 - INFO - Processing complete
+2025-08-06 02:04:46,057 - INFO - No valid signals to process
+2025-08-06 02:04:46,062 - INFO - Processing complete
+2025-08-06 02:04:58,191 - INFO - No valid signals to process
+2025-08-06 02:04:58,191 - INFO - Processing complete
+2025-08-06 02:05:11,948 - INFO - No valid signals to process
+2025-08-06 02:05:11,948 - INFO - Processing complete
+2025-08-06 02:05:27,043 - INFO - No valid signals to process
+2025-08-06 02:05:27,044 - INFO - Processing complete

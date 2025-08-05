@@ -18,6 +18,10 @@
         "sl_percent": 3.5,
         "tp_percent": 2.5,
         "breakeven_at": 0.5
+      },
+      "reverse_handling": {
+        "mode": "netting",
+        "magic_restriction": true
       }
     },
     "algo11": {
@@ -33,12 +37,16 @@
         "sl_percent": 3.5,
         "tp_percent": 2.5,
         "breakeven_at": 0.5
+      },
+      "reverse_handling": {
+        "mode": "off",
+        "magic_restriction": true
       }
     },
     "algo15": {
       "enabled": true,
       "allowed_actions": ["buy", "sell"],
-      "allowed_symbols": ["XAUUSD", "AUDUSD" ,"USDJPY", "EURUSD", "GBPUSD", "GBPJPY"],
+      "allowed_symbols": ["XAUUSD", "AUDUSD", "USDJPY", "EURUSD", "GBPUSD", "GBPJPY"],
       "lot_size": {
         "type": "percentage",
         "value": 2
@@ -48,6 +56,10 @@
         "sl_percent": 3.5,
         "tp_percent": 2.5,
         "breakeven_at": 0.5
+      },
+      "reverse_handling": {
+        "mode": "hedging",
+        "magic_restriction": true
       }
     }
   },

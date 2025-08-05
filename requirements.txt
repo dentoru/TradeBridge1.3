@@ -1,0 +1,5 @@
+schedule>=1.2.0
+pytz
+pandas
+MetaTrader5
+flask
