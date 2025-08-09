@@ -1,0 +1,4 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-08-09T00:00:05.236118,BTCUSD,buy,1hr,algo10,yes
+2025-08-09T03:00:17.843983,BTCUSD,sell,1hr,algo10,yes
+2025-08-09T05:14:36.923284,BTCUSD,buy,1hr,algo10,yes

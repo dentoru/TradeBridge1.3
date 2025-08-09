@@ -1,0 +1,4 @@
+timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_mode,trade_done,tpsl_done,ticket,execution_price,executed_at,processed_at
+2025-08-09T00:00:05.236118+00:00,BTCUSD,buy,1hr,algo10,yes,0.08,percentage_balance,yes,no,,,2025-08-08T21:00:11.090023+00:00,2025-08-08T21:00:06.987736+00:00
+2025-08-09T03:00:17.843983+00:00,BTCUSD,sell,1hr,algo10,yes,0.07,percentage_balance,yes,no,1610348717.0,116673.69,2025-08-09T00:00:23.405624+00:00,2025-08-09T00:00:19.709052+00:00
+2025-08-09T05:14:36.923284+00:00,BTCUSD,buy,1hr,algo10,yes,0.07,percentage_balance,yes,no,,,2025-08-09T02:14:37.580320+00:00,2025-08-09T02:14:37.080457+00:00

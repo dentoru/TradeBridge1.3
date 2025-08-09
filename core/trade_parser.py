@@ -60,9 +60,14 @@ def is_recent(signal_time):
     return (dt.datetime.now(utc) - signal_time) <= dt.timedelta(minutes=1)
 
 def validate_signal(signal, strategy_cfg):
-    """Validate against strategy rules"""
+    """Validate against strategy rules including trade days"""
     if not strategy_cfg.get("enabled", False):
         return "yes (strg:off)"
+    
+    # Check day restriction
+    current_day = dt.datetime.now(utc).strftime("%a").lower()  # e.g., "mon"
+    if current_day not in strategy_cfg.get("trade_days", []):
+        return "yes (skipped:day_not_allowed)"
     
     action = str(signal["action"]).lower()
     symbol = str(signal["symbol"]).upper()
@@ -76,11 +81,9 @@ def validate_signal(signal, strategy_cfg):
 def calculate_lotsize(symbol, strategy_cfg, strategy_name):
     """Calculate lot size using persistent connection"""
     try:
-        # Fixed lot strategy
         if strategy_cfg["lot_size"]["type"] == "fixed":
             return round(float(strategy_cfg["lot_size"]["value"]), 2)
             
-        # Percentage-based strategy
         balance = get_balance(strategy_name)
         logger.info(f"[{strategy_name}] Account Balance: ${balance:.2f} (Leverage 1:{LEVERAGE})")
         
@@ -90,25 +93,20 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
             
         tick = mt5.symbol_info_tick(symbol)
         
-        # Instrument-specific settings
-        if symbol.startswith(('XAU', 'XAG')):  # Metals
+        if symbol.startswith(('XAU', 'XAG')):
             price = tick.ask
             contract_size = 100
-        elif symbol.startswith(('BTC', 'ETH')):  # Crypto
+        elif symbol.startswith(('BTC', 'ETH')):
             price = tick.last if tick.last > 0 else tick.ask
             contract_size = 1.0
-        else:  # Forex
+        else:
             price = tick.ask
             contract_size = 100000
         
-        # Risk calculation
         risk_pct = strategy_cfg["lot_size"]["value"] / 100
         risk_amount = (balance * LEVERAGE) * risk_pct
-        
-        # Core calculation
         lot_size = risk_amount / (price * contract_size)
         
-        # Apply constraints
         min_lot = 0.00001 if symbol.startswith(('BTC', 'ETH')) else 0.01
         final_lot = max(min(round(lot_size, 2), 100), min_lot)
         
@@ -125,7 +123,7 @@ def calculate_lotsize(symbol, strategy_cfg, strategy_name):
         
     except Exception as e:
         logger.error(f"[{strategy_name}] Lot calc error: {str(e)}")
-        return 0.01  # Fallback
+        return 0.01
 
 def process_signals():
     """Main processing pipeline"""
@@ -226,7 +224,7 @@ def save_and_mark_processed(df):
 
 if __name__ == "__main__":
     print("\n" + "="*50)
-    print("=== TRADE BRIDGE PARSER v1.7 - SILENT MODE ===")
+    print("=== TRADE BRIDGE PARSER v1.8 - DAY FILTER ===")
     print("="*50 + "\n")
     
     if not mt5.initialize():

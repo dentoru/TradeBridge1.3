@@ -1,0 +1,7 @@
+timestamp,symbol,action,timeframe,strategy,executed
+2025-08-07T06:00:09.491740,ETHUSD,sell,1hr,algo10,yes
+2025-08-07T06:00:19.935136,BTCUSD,sell,1hr,algo10,yes
+2025-08-07T07:51:09.009521,BTCUSD,buy,1hr,algo10,yes
+2025-08-07T08:00:38.214256,ETHUSD,buy,1hr,algo10,yes
+2025-08-07T09:00:11.536936,ETHUSD,sell,1hr,algo10,yes
+2025-08-07T23:00:00.369100,EURUSD,buy,1hr,algo10,yes

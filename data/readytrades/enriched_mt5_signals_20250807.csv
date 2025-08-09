@@ -1,0 +1,7 @@
+timestamp,symbol,action,timeframe,strategy,executed,lot_size,tpsl_mode,trade_done,tpsl_done,ticket,execution_price,executed_at,processed_at
+2025-08-07T06:00:09.491740+00:00,ETHUSD,sell,1hr,algo10,yes,2.55,percentage_balance,yes,no,1604151140.0,3660.05,2025-08-07T03:00:13.864766+00:00,2025-08-07T03:00:11.165851+00:00
+2025-08-07T06:00:19.935136+00:00,BTCUSD,sell,1hr,algo10,yes,0.08,percentage_balance,yes,no,1604151344.0,114651.54,2025-08-07T03:00:30.355649+00:00,2025-08-07T03:00:26.871136+00:00
+2025-08-07T07:51:09.009521+00:00,BTCUSD,buy,1hr,algo10,yes,0.08,percentage_balance,yes,no,,,2025-08-07T04:51:16.358910+00:00,2025-08-07T04:51:12.416522+00:00
+2025-08-07T08:00:38.214256+00:00,ETHUSD,buy,1hr,algo10,yes,2.66,percentage_balance,yes,no,1604236184.0,3663.48,2025-08-07T05:00:46.346897+00:00,2025-08-07T05:00:45.769079+00:00
+2025-08-07T09:00:11.536936+00:00,ETHUSD,sell,1hr,algo10,yes,2.71,percentage_balance,yes,no,1604310745.0,3688.72,2025-08-07T06:00:17.650518+00:00,2025-08-07T06:00:13.352685+00:00
+2025-08-07T23:00:00.369100+00:00,EURUSD,buy,1hr,algo10,yes (err:symbol),,,no,no,,,,2025-08-07T20:00:06.519675+00:00

@@ -7,6 +7,7 @@
   "strategies": {
     "algo10": {
       "enabled": true,
+      "trade_days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       "allowed_actions": ["buy", "sell"],
       "allowed_symbols": ["BTCUSD", "ETHUSD"],
       "lot_size": {
@@ -26,6 +27,7 @@
     },
     "algo11": {
       "enabled": true,
+      "trade_days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       "allowed_actions": ["buy", "sell"],
       "allowed_symbols": ["XAUUSD", "BTCUSD", "ETHUSD", "EURUSD", "GBPUSD", "GBPJPY"],
       "lot_size": {
@@ -45,6 +47,7 @@
     },
     "algo15": {
       "enabled": true,
+      "trade_days": ["tue", "wed", "thu"],
       "allowed_actions": ["buy", "sell"],
       "allowed_symbols": ["XAUUSD", "AUDUSD", "USDJPY", "EURUSD", "GBPUSD", "GBPJPY"],
       "lot_size": {
